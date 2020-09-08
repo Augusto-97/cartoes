@@ -25,7 +25,7 @@ public class Cliente implements Serializable {
    	private static final long serialVersionUID = 1L;
  
    	@Id
-   	@GeneratedValue(strategy = GenerationType.AUTO)//campo auto incrementado.
+   	@GeneratedValue(strategy = GenerationType.AUTO)
    	private int id;
    	
    	@Column(name = "nome", nullable = false, length = 100)
@@ -94,12 +94,12 @@ public class Cliente implements Serializable {
  
    	@PreUpdate
    	public void preUpdate() {
-         	dataAtualizacao = new Date();//Utiliza a data e hora do sistema.
+         	dataAtualizacao = new Date();
    	}
  
    	@PrePersist
    	public void prePersist() {
-         	dataAtualizacao = new Date();//Utiliza a data e hora do sistema.
+         	dataAtualizacao = new Date();
    	}
  
    	@Override

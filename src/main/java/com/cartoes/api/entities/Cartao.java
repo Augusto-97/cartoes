@@ -2,7 +2,9 @@ package com.cartoes.api.entities;
  
 import java.io.Serializable;
 import java.util.Date;
- 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,11 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
  
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
  
 @Entity
 @Table(name = "cartao")
@@ -23,7 +27,7 @@ public class Cartao implements Serializable {
    	private static final long serialVersionUID = 1L;
  
    	@Id
-   	@GeneratedValue(strategy = GenerationType.AUTO)//campo auto incrementado.
+   	@GeneratedValue(strategy = GenerationType.AUTO)
    	private int id;
    	
    	@Column(name = "numero", nullable = false, length = 16, unique = true)
@@ -41,6 +45,10 @@ public class Cartao implements Serializable {
    	@JsonBackReference
    	@ManyToOne(fetch = FetchType.EAGER)
    	private Cliente cliente;
+   	
+   	@JsonManagedReference
+   	@OneToMany(mappedBy = "cartao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   	private List<Transacao> transacoes;
    	
    	public int getId() {
          	return id;
@@ -89,15 +97,23 @@ public class Cartao implements Serializable {
    	public void setCliente(Cliente cliente) {
          	this.cliente = cliente;
    	}
+   	
+   	public List<Transacao> getTransacoes() {
+   		return transacoes;
+   	}
+   	
+   	public void setTransacao(List<Transacao> transacao) {
+   		this.transacoes = transacao;
+   	}
  
    	@PreUpdate
    	public void preUpdate() {
-         	dataAtualizacao = new Date(); //Utiliza a data e hora do sistema.
+         	dataAtualizacao = new Date();
    	}
  
    	@PrePersist
    	public void prePersist() {
-         	dataAtualizacao = new Date(); //Utiliza a data e hora do sistema.
+         	dataAtualizacao = new Date();
    	}
  
    	@Override

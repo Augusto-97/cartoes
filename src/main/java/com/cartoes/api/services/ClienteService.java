@@ -58,15 +58,15 @@ public class ClienteService {
          	
          	log.info("Service: salvando o cliente: {}", cliente);
          	
-         	if (cliente.getId() > 0) //Se informar o ID 
-                	buscarPorId(cliente.getId()); //Faz uma busca, pois será feito um update em um cliente existente.
+         	if (cliente.getId() > 0)
+                	buscarPorId(cliente.getId());
          	
          	try {
-                	return clienteRepository.save(cliente); //Caso exista, fará o insert ou update (insert - com ID zerado)
+                	return clienteRepository.save(cliente);
          	} catch (DataIntegrityViolationException e) {
                 	
                 	log.info("Service: O cpf: {} já está cadastrado para outro cliente", cliente.getCpf());
-                	throw new ConsistenciaException("O cpf: {} já está cadastrado para outro cliente", cliente.getCpf());//Caso já exista o ID ou CPF informado.
+                	throw new ConsistenciaException("O cpf: {} já está cadastrado para outro cliente", cliente.getCpf());
                 	
          	}
  
